@@ -19,7 +19,7 @@ def do_import(code):
 
     if chrome_bin:
         opts = Options()
-        opts.binary_location(chrome_bin)
+        opts.binary_location = chrome_bin
         driver = webdriver.Chrome(options=opts)
     else:
         driver = webdriver.Chrome(ChromeDriverManager().install())
