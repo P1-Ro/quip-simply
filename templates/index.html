@@ -30,7 +30,7 @@
             <form method="post" action="create_episode">
                 <fieldset>
                     <label for="nameField">Room password</label>
-                    <input type="text" name="password" id="password" autocomplete="off" style="text-transform:uppercase">
+                    <input type="text" name="password" id="password" required maxlength="4" minlength="4" autocomplete="off" style="text-transform:uppercase">
                     <input class="button-primary" type="submit" value="Send">
                 </fieldset>
             </form>
