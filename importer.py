@@ -41,7 +41,7 @@ def do_import(code):
     driver.find_element_by_id("ugc-title-input").send_keys("Best episode so far")
     driver.find_element_by_id("ugc-title-button").click()
 
-    file1 = codecs.open('../quipsimply/lines.txt', 'r', encoding="utf-8")
+    file1 = codecs.open('lines.txt', 'r', encoding="utf-8")
     lines = file1.readlines()
     chosen_files = random.sample(lines, 64)
 
