@@ -15,3 +15,5 @@ Unidecode==1.1.1
 urllib3==1.25.11
 webdriver-manager==3.2.2
 Werkzeug==1.0.1
+
+gunicorn
