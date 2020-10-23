@@ -37,9 +37,9 @@ def do_import(code):
     wait.until(EC.element_to_be_clickable((By.ID, "ugc-new-button")))
     driver.find_element_by_id("ugc-new-button").click()
 
-    wait.until(EC.element_to_be_clickable((By.ID, "ugc-title-input")))
-    driver.find_element_by_id("ugc-title-input").send_keys("Best episode so far")
-    driver.find_element_by_id("ugc-title-button").click()
+    wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".ugc-action-title textarea,  #ugc-title-input")))
+    driver.find_element_by_css_selector(".ugc-action-title textarea,  #ugc-title-input").send_keys("Best episode so far")
+    driver.find_element_by_css_selector(".ugc-action-title button, #ugc-title-button").click()
 
     file1 = codecs.open('lines.txt', 'r', encoding="utf-8")
     lines = file1.readlines()
@@ -47,13 +47,13 @@ def do_import(code):
 
     for line in chosen_files:
         fixed_line = unidecode.unidecode(line)
-        wait.until(EC.element_to_be_clickable((By.ID, "ugc-add-button")))
-        driver.find_element_by_id("ugc-add-input").send_keys(fixed_line)
-        driver.find_element_by_id("ugc-add-button").click()
+        wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".ugc-action-add button, #ugc-add-button")))
+        driver.find_element_by_css_selector(".ugc-action-add textarea, #ugc-add-input").send_keys(fixed_line)
+        driver.find_element_by_css_selector(".ugc-action-add button, #ugc-add-button").click()
 
-    driver.find_element_by_id("ugc-save-button").click()
+    driver.find_element_by_css_selector(".ugc-action-done button, #ugc-save-button").click()
 
-    wait.until(EC.element_to_be_clickable((By.ID, "ugc-play-button")))
-    driver.find_element_by_id("ugc-play-button").click()
+    wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".ugc-action-play button, #ugc-play-button")))
+    driver.find_element_by_css_selector(".ugc-action-play button, #ugc-play-button").click()
 
     driver.quit()
