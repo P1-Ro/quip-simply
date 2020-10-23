@@ -25,6 +25,12 @@
         </div>
     </div>
 
+    {% if success %}
+        <div class="row">
+            Enjoy your episode
+        </div>
+    {% endif %}
+
     <div class="row">
         <div class="column column-50 column-offset-25">
             <form method="post" action="create_episode">

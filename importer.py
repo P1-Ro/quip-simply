@@ -34,8 +34,8 @@ def do_import(code):
     wait.until(EC.element_to_be_clickable((By.ID, "button-join")))
     driver.find_element_by_id("button-join").click()
 
-    wait.until(EC.element_to_be_clickable((By.ID, "ugc-new-button")))
-    driver.find_element_by_id("ugc-new-button").click()
+    wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".ugc-action-new button, #ugc-new-button")))
+    driver.find_element_by_css_selector(".ugc-action-new button, #ugc-new-button").click()
 
     wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".ugc-action-title textarea,  #ugc-title-input")))
     driver.find_element_by_css_selector(".ugc-action-title textarea,  #ugc-title-input").send_keys("Best episode so far")
