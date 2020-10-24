@@ -78,7 +78,8 @@
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.min.js"></script>
 <script>
-    const socket = io();
+    const ws_scheme = window.location.protocol === "https:" ? "wss://" : "ws://"
+    const socket = io.connect(ws_scheme + location.host);
     const progress = document.querySelector(".progress-value");
 
     socket.on('progress', (data) => {
