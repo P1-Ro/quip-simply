@@ -6,12 +6,43 @@
 
     <!-- Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
-
     <!-- CSS Reset -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
-
     <!-- Milligram CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+
+    <style>
+        .loading .progress {
+            width: 100%;
+            border: 1px solid #9b4dca;
+            border-radius: 25px;
+            box-shadow: 0 0 14px 2px rgba(155, 77, 202, 0.5);
+        }
+
+        .loading .progress-value {
+            display: block;
+            height: 22px;
+            background-color: #9b4dca;
+            box-shadow: 0 10px 40px -10px #9b4dca;
+            border-radius: 25px;
+            width: 0;
+        }
+
+        .loading form {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .error {
+            color: red;
+        }
+
+    </style>
+
 </head>
 <body>
 
@@ -25,27 +56,82 @@
         </div>
     </div>
 
-    {% if success %}
-        <div class="row">
-            Enjoy your episode
-        </div>
-    {% endif %}
 
     <div class="row">
         <div class="column column-50 column-offset-25">
-            <form method="post" action="create_episode">
+            <div class="progress">
+                <div class="progress-value"></div>
+            </div>
+            <p class="message"></p>
+            <form onsubmit="submitForm(event)">
                 <fieldset>
                     <label for="nameField">Room password</label>
-                    <input type="text" name="password" id="password" required maxlength="4" minlength="4" autocomplete="off" style="text-transform:uppercase">
-                    <input class="button-primary" type="submit" value="Send">
+                    <input type="text" name="password" id="password" required maxlength="4" minlength="4"
+                           autocomplete="off" style="text-transform:uppercase">
+                    <input class="button-primary float-right" type="submit" value="Send">
                 </fieldset>
             </form>
         </div>
     </div>
 
-
-
 </div>
-
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.min.js"></script>
+<script>
+    const socket = io();
+    const progress = document.querySelector(".progress-value");
+
+    socket.on('progress', (data) => {
+        const step = data["step"]
+        const percent = Math.floor(step / 71 * 100);
+        if (percent < 100) {
+            progress.style.width = percent + "%"
+        } else {
+            document.body.classList.toggle("loading");
+            createSuccess();
+        }
+        console.log(data);
+    });
+
+    socket.on('error', (msg) => {
+        document.body.classList.toggle("loading");
+        createError(msg);
+        console.log(msg);
+    });
+
+    function submitForm(evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+        reset();
+        document.body.classList.toggle("loading");
+        const pass = document.getElementById("password").value
+
+        socket.emit("create_episode", {password: pass})
+    }
+
+    function createSuccess() {
+        const element = document.querySelector(".message");
+        element.innerText = "Enjoy your episode";
+        element.classList.add("success");
+        resetForm();
+    }
+
+    function createError(msg) {
+        const element = document.querySelector(".message");
+        element.innerText = msg;
+        element.classList.add("error");
+        resetForm();
+    }
+
+    function reset() {
+        const element = document.querySelector(".message");
+        element.innerText = "";
+        element.classList.remove("error", "success");
+    }
+
+    function resetForm() {
+        document.querySelector("form").reset();
+    }
+
+</script>
 </html>
