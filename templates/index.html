@@ -86,7 +86,15 @@
     window.onload = function () {
         const ws_scheme = window.location.protocol === "https:" ? "wss://" : "ws://"
         const progress = document.querySelector(".progress-value");
-        window.socket = io.connect(ws_scheme + location.host);
+        window.socket = io(ws_scheme + location.host, {
+            transports: ['websocket']
+        });
+
+        // on reconnection, reset the transports option, as the Websocket
+        // connection may have failed (caused by proxy, firewall, browser, ...)
+        socket.on('reconnect_attempt', () => {
+          socket.io.opts.transports = ['polling', 'websocket'];
+        });
 
         socket.on('progress', (data) => {
             const step = data["step"]
