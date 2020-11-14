@@ -56,6 +56,11 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="column column-50 column-offset-25">
+         To play choose <b>Make your own</b> in game a and enter room password below.
+        </div>
+    </div>
 
     <div class="row">
         <div class="column column-50 column-offset-25">
@@ -78,27 +83,29 @@
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.min.js"></script>
 <script>
-    const ws_scheme = window.location.protocol === "https:" ? "wss://" : "ws://"
-    const socket = io.connect(ws_scheme + location.host);
-    const progress = document.querySelector(".progress-value");
+    window.onload = function () {
+        const ws_scheme = window.location.protocol === "https:" ? "wss://" : "ws://"
+        const progress = document.querySelector(".progress-value");
+        window.socket = io.connect(ws_scheme + location.host);
 
-    socket.on('progress', (data) => {
-        const step = data["step"]
-        const percent = Math.floor(step / 71 * 100);
-        if (percent < 100) {
-            progress.style.width = percent + "%"
-        } else {
+        socket.on('progress', (data) => {
+            const step = data["step"]
+            const percent = Math.floor(step / 71 * 100);
+            if (percent < 100) {
+                progress.style.width = percent + "%"
+            } else {
+                document.body.classList.toggle("loading");
+                createSuccess();
+            }
+            console.log(data);
+        });
+
+        socket.on('error', (msg) => {
             document.body.classList.toggle("loading");
-            createSuccess();
-        }
-        console.log(data);
-    });
-
-    socket.on('error', (msg) => {
-        document.body.classList.toggle("loading");
-        createError(msg);
-        console.log(msg);
-    });
+            createError(msg);
+            console.log(msg);
+        });
+    }
 
     function submitForm(evt) {
         evt.stopPropagation();
