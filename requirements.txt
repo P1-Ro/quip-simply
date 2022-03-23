@@ -17,5 +17,5 @@ webdriver-manager==3.2.2
 Werkzeug==1.0.1
 flask-socketio==4.3.1
 
-eventlet
-gunicorn
+unicorn==20.1.0
+eventlet==0.30.2
