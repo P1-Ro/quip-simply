@@ -16,8 +16,12 @@ def index():
 
 @socketio.on("create_episode")
 def create_episode(data):
-    Importer().do_import(data["password"])
+    app.logger.info('start creating episode')
+    Importer(app.logger).do_import(data["password"])
 
 
 if __name__ == "__main__":
+    gunicorn_logger = logging.getLogger('gunicorn.error')
+    app.logger.handlers = gunicorn_logger.handlers
+    app.logger.setLevel(gunicorn_logger.level)
     socketio.run(app)

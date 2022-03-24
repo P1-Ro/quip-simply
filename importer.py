@@ -18,14 +18,22 @@ class Importer:
     EPISODE = "Best episode so far"
     NAME = "IMPORTER"
     step = 0
+    
+    def __init__(self, logger):
+        self.logger = logger
 
     def do_import(self, code):
 
-        chrome_bin = os.getenv("GOOGLE_CHROME_SHIM")
+        bundled = os.getenv("BUNDLED")
+        self.logger.info(bundled)
 
-        if chrome_bin:
-            opts = Options()
-            opts.binary_location = chrome_bin
+        if bundled is not None:
+            opts = webdriver.ChromeOptions()
+            opts.add_argument('--no-sandbox')
+            opts.add_argument('--headless')
+            opts.add_argument('--disable-gpu')
+            opts.add_argument('--disable-dev-shm-usage')
+            opts.add_argument("--window-size=1920,1080")
             driver = webdriver.Chrome(options=opts)
         else:
             driver = webdriver.Chrome(ChromeDriverManager().install())
